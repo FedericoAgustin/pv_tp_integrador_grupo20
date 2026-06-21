@@ -5,7 +5,7 @@ const RutaProtegida = ({ children }) => {
   const { admin } = useAdmin();
 
   if (!admin) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
