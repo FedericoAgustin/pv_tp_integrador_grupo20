@@ -11,22 +11,14 @@ import Layout from "./components/layout/Layout";
 const App = () => {
   return (
     <AdminProvider>
-  <Routes>
-    <Route path="/" element={<Login />} />
-
-    <Route
-      element={
-        <RutaProtegida>
-          <Layout />
-        </RutaProtegida>
-      }
-    >
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/clientes" element={<ListaClientes />} />
-    </Route>
-  </Routes>
-</AdminProvider>
-
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route element={<RutaProtegida><Layout /></RutaProtegida>}        >
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/clientes" element={<ListaClientes />} />
+        </Route>
+      </Routes>
+    </AdminProvider>
   );
 };
 
