@@ -4,14 +4,13 @@ import CardDashboard from "../components/common/CardDashboard";
 
 const Dashboard = () => {
     return (
-        
         <Container className="mt-4">
             <Row>
                 <Col md={6}>
                     <CardDashboard
                         element={{
                             title: "Listado de Clientes",
-                            text: "Consultá y administrá todos los clientes registrados.",
+                            text: "Ver Listado de clientes.",
                             link: "/clientes", variant: "primary",
                             buttonText: "Ver Clientes"
                         }}>
@@ -20,7 +19,7 @@ const Dashboard = () => {
                 <Col md={6}>
                     <CardDashboard element={{
                         title: "Alta de Clientes",
-                        text: "Registrá nuevos clientes en el sistema.",
+                        text: "Crear nuevos clientes",
                         link: "/clientes/new",
                         variant: "success",
                         buttonText: "Crear Cliente"
