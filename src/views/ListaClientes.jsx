@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Container, Table, Spinner, Alert } from "react-bootstrap";
+import clientesServices from "../service/clientesServices";
 
 const ListaClientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -12,30 +13,13 @@ const ListaClientes = () => {
       try {
         setCargando(true);
         setError(null);
-        const respuesta = await axios.get("https://fakestoreapi.com/users");
-        setClientes(respuesta.data);
-      } catch (err) {
-        if (err.response) {
-          switch (err.response.status) {
-            case 404:
-              setError("Recurso no encontrado (404)");
-              break;
-
-            case 500:
-              setError("Error interno del servidor (500)");
-              break;
-
-            default:
-              setError(
-                `Error ${err.response.status}: ${err.response.statusText}`
-              );
-          }
-        } else if (err.request) {
-          setError("No se pudo conectar con el servidor");
-        } else {
-          setError(err.message);
-        }
-      } finally {
+        const respuestaClientes = await clientesServices.listarClientes();
+        setClientes(respuestaClientes);
+      }
+      catch (err) {
+        setError(err.message);
+      }
+      finally {
         setCargando(false);
       }
     };
@@ -47,8 +31,6 @@ const ListaClientes = () => {
   return (
     <Container className="mt-4">
       <h2>Clientes</h2>
-
-
 
       {cargando && (
         <div className="text-center my-4">
