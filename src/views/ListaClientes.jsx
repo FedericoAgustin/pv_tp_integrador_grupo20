@@ -7,6 +7,9 @@ const ListaClientes = () => {
   const [clientes, setClientes] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+    const [nombre, setNombre] = useState("");
+    const [clienteEncontrado,setClienteEncontrado]=useState([]);
+
 
   useEffect(() => {
     const obtenerClientes = async () => {
@@ -15,10 +18,11 @@ const ListaClientes = () => {
         setError(null);
         const respuestaClientes = await clientesServices.listarClientes();
         setClientes(respuestaClientes);
-      }
+        setClienteEncontrado(respuestaClientes);
+          }
       catch (err) {
-        setError(err.message);
-      }
+          setError(err.message);
+        }
       finally {
         setCargando(false);
       }
@@ -27,10 +31,29 @@ const ListaClientes = () => {
     obtenerClientes();
   }, []);
   /** */
+  const buscarProyectos = (nombre) => {
+    let resultado = clienteEncontrado.filter(c => {
+       const apellido = c.name.lastname.toLowerCase().includes(nombre.toLowerCase());
+        const ciudad = c.address.city.toLowerCase().includes(nombre.toLowerCase());
+        return apellido || ciudad;
+    });
 
+    return resultado;
+  }
+
+  const handleBuscar = (e) => {
+    const valor=e.target.value;
+    setNombre(valor);
+    setClientes(buscarProyectos(valor));
+  }
+
+  
   return (
     <Container className="mt-4">
       <h2>Clientes</h2>
+      <div className="mb-3">
+        <input type="text" className="form-control w-50" value={nombre} onChange={(e)=>{handleBuscar(e)}} placeholder=""/>
+      </div>
 
       {cargando && (
         <div className="text-center my-4">
