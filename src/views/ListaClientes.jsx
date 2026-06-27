@@ -1,7 +1,8 @@
-import axios from "axios";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Container, Table, Spinner, Alert } from "react-bootstrap";
+import { Container, Table, Spinner, Alert, Button } from "react-bootstrap";
 import clientesServices from "../service/clientesServices";
+
 
 const ListaClientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -72,6 +73,7 @@ const ListaClientes = () => {
               <th>Email</th>
               <th>Teléfono</th>
               <th>Ciudad</th>
+              <th>Ficha Personal</th>
             </tr>
           </thead>
           <tbody>
@@ -82,6 +84,13 @@ const ListaClientes = () => {
                 <td>{cliente.email}</td>
                 <td>{cliente.phone}</td>
                 <td>{cliente.address.city}</td>
+                <td>
+                  <Link to={`/clientes/${cliente.id}`}>
+                    <Button variant="success" size="sm">
+                      Ver Ficha Completa
+                    </Button>
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
