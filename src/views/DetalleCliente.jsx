@@ -65,7 +65,7 @@ const DetalleCliente = () => {
     }
   };
 
-  return (
+   return (
     <Container className="mt-4">
       <h2>Ficha Completa del Cliente</h2>
 
@@ -86,28 +86,37 @@ const DetalleCliente = () => {
               <Card.Title>
                 {cliente.name.firstname} {cliente.name.lastname}
               </Card.Title>
-              <Card.Subtitle className="mb-3 text-muted">
+              <Card.Subtitle className="mb-0 text-muted">
                 ID: {cliente.id}
               </Card.Subtitle>
+            </Card.Body>
+          </Card>
 
-              <Row>
-                <Col md={6}>
-                  <h5>Datos de Contacto y Acceso</h5>
+          <Row>
+            <Col md={6}>
+              <Card className="mb-4 shadow-sm h-100">
+                <Card.Body>
+                  <Card.Title as="h5">Datos de Contacto y Acceso</Card.Title>
                   <p><strong>Email:</strong> {cliente.email}</p>
                   <p><strong>Teléfono:</strong> {cliente.phone}</p>
                   <p><strong>Usuario:</strong> {cliente.username}</p>
                   <p><strong>Contraseña:</strong> {cliente.password}</p>
-                </Col>
-                <Col md={6}>
-                  <h5>Dirección</h5>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col md={6}>
+              <Card className="mb-4 shadow-sm h-100">
+                <Card.Body>
+                  <Card.Title as="h5">Dirección</Card.Title>
                   <p><strong>Calle:</strong> {cliente.address.street}</p>
                   <p><strong>Número:</strong> {cliente.address.number}</p>
                   <p><strong>Código Postal:</strong> {cliente.address.zipcode}</p>
                   <p><strong>Ciudad:</strong> {cliente.address.city}</p>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
 
           {esGerencia && (
             <Button variant="danger" onClick={manejarEliminar}>
