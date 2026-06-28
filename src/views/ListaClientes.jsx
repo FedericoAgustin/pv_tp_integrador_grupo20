@@ -10,8 +10,8 @@ const ListaClientes = () => {
   const clientesFiltrados = clientes.filter(c => {
     const texto = nombre.toLowerCase();
 
-    const apellido = c.name.lastname.toLowerCase().includes(texto);
-    const ciudad = c.address.city.toLowerCase().includes(texto);
+    const apellido = c.name?.lastname.toLowerCase().includes(texto);
+    const ciudad = c.address?.city.toLowerCase().includes(texto);
 
     return apellido || ciudad;
   });
