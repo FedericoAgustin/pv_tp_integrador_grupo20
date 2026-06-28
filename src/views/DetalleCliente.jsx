@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Container, Card, Row, Col, Spinner, Alert, Button } from "react-bootstrap";
 import { useAdmin } from "../context/AdminContext";
+import CardInfoDetalle from "../components/common/CardInfoDetalle";
 
 const DetalleCliente = () => {
   const { id } = useParams();
@@ -91,58 +92,28 @@ const DetalleCliente = () => {
           </Card>
           <Row className="g-4">
             <Col md={6}>
-              <Card className="shadow-sm border-0 rounded-4 h-100">
-                <Card.Header className="bg-primary text-white fw-semibold">
-                  Datos de Contacto
-                </Card.Header>
-                <Card.Body>
-                  <div className="mb-3">
-                    <small className="text-muted text-uppercase">Email</small>
-                    <div>{cliente.email}</div>
-                  </div>
-                  <hr />
-                  <div className="mb-3">
-                    <small className="text-muted text-uppercase">Teléfono</small>
-                    <div>{cliente.phone}</div>
-                  </div>
-                  <hr />
-                  <div className="mb-3">
-                    <small className="text-muted text-uppercase">Usuario</small>
-                    <div>{cliente.username}</div>
-                  </div>
-                  <hr />
-                  <div>
-                    <small className="text-muted text-uppercase">Contraseña</small>
-                    <div>{cliente.password}</div>
-                  </div>
-                </Card.Body>
-              </Card>
+              <CardInfoDetalle
+                headerColor="bg-primary"
+                titulo="Datos de Contacto"
+                datos={[
+                  { label: "Email", valor: cliente.email },
+                  { label: "Teléfono", valor: cliente.phone },
+                  { label: "Usuario", valor: cliente.username },
+                  { label: "Contraseña", valor: cliente.password }
+                ]}
+              />
             </Col>
             <Col md={6}>
-              <Card className="shadow-sm border-0 rounded-4 h-100">
-                <Card.Header className="bg-secondary text-white fw-semibold">Dirección</Card.Header>
-                <Card.Body>
-                  <div className="mb-3">
-                    <small className="text-muted text-uppercase">Calle</small>
-                    <div>{cliente.address.street}</div>
-                  </div>
-                  <hr />
-                  <div className="mb-3">
-                    <small className="text-muted text-uppercase">Número</small>
-                    <div>{cliente.address.number}</div>
-                  </div>
-                  <hr />
-                  <div className="mb-3">
-                    <small className="text-muted text-uppercase">Código Postal</small>
-                    <div>{cliente.address.zipcode}</div>
-                  </div>
-                  <hr />
-                  <div>
-                    <small className="text-muted text-uppercase">Ciudad</small>
-                    <div>{cliente.address.city}</div>
-                  </div>
-                </Card.Body>
-              </Card>
+              <CardInfoDetalle
+                headerColor="bg-secondary"
+                titulo="Dirección"
+                datos={[
+                  { label: "Calle", valor: cliente.address.street },
+                  { label: "Número", valor: cliente.address.number },
+                  { label: "Código Postal", valor: cliente.address.zipcode },
+                  { label: "Ciudad", valor: cliente.address.city }
+                ]}
+              />
             </Col>
           </Row>
           <div className="d-flex gap-2 mt-4">
