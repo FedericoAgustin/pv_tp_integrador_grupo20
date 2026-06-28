@@ -40,21 +40,7 @@ const Login = () => {
               {errores.nombre}
             </Form.Control.Feedback>
           </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Contraseña</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              isInvalid={errores.password ? true : false}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              {errores.password}
-            </Form.Control.Feedback>
-          </Form.Group>
-
+          
           <Form.Group className="mb-3">
             <Form.Label>Sector</Form.Label>
             <Form.Select
