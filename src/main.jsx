@@ -5,12 +5,15 @@ import App from '../src/App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AdminProvider } from './context/AdminContext.jsx'
+import { ClientesProvider } from './context/ClienteContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <AdminProvider>
-        <App />
+        <ClientesProvider>
+          <App />
+        </ClientesProvider>
       </AdminProvider>
     </BrowserRouter>
   </StrictMode>

@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Container, Card, Row, Col, Spinner, Alert, Button } from "react-bootstrap";
 import { useAdmin } from "../context/AdminContext";
+import { useClientes } from "../context/ClienteContext";
 import CardInfoDetalle from "../components/common/CardInfoDetalle";
 
 const DetalleCliente = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { admin } = useAdmin();
+  const { eliminarCliente } = useClientes();
 
   const [cliente, setCliente] = useState(null);
   const [cargando, setCargando] = useState(true);
@@ -20,8 +22,13 @@ const DetalleCliente = () => {
       try {
         setCargando(true);
         setError(null);
-        const respuesta = await axios.get(`https://fakestoreapi.com/users/${id}`);
+
+        const respuesta = await axios.get(
+          `https://fakestoreapi.com/users/${id}`
+        );
+
         setCliente(respuesta.data);
+
       } catch (err) {
         if (err.response) {
           switch (err.response.status) {
@@ -31,7 +38,6 @@ const DetalleCliente = () => {
             case 500:
               setError("Error interno del servidor (500)");
               break;
-
             default:
               setError(
                 `Error ${err.response.status}: ${err.response.statusText}`
@@ -52,9 +58,10 @@ const DetalleCliente = () => {
 
   const esGerencia = admin?.sector === "Gerencia";
 
+  //ELIMINAR CON CONTEXT
   const manejarEliminar = async () => {
     try {
-      await axios.delete(`https://fakestoreapi.com/users/${id}`);
+      await eliminarCliente(id);
       setMensaje("Cliente eliminado correctamente.");
       setTimeout(() => {
         navigate("/clientes");
@@ -77,9 +84,10 @@ const DetalleCliente = () => {
       )}
       {error && <Alert variant="danger">{error}</Alert>}
       {mensaje && <Alert variant="success">{mensaje}</Alert>}
+
       {!cargando && !error && cliente && (
         <>
-          {/* Cabecera */}
+          {/* CABECERA */}
           <Card className="shadow border-0 rounded-4 mb-4">
             <Card.Body>
               <h3 className="mb-1">
@@ -90,6 +98,7 @@ const DetalleCliente = () => {
               </p>
             </Card.Body>
           </Card>
+          {/* INFO */}
           <Row className="g-4">
             <Col md={6}>
               <CardInfoDetalle
@@ -103,6 +112,7 @@ const DetalleCliente = () => {
                 ]}
               />
             </Col>
+
             <Col md={6}>
               <CardInfoDetalle
                 headerColor="bg-secondary"
@@ -116,6 +126,7 @@ const DetalleCliente = () => {
               />
             </Col>
           </Row>
+          {/* BOTONES */}
           <div className="d-flex gap-2 mt-4">
             <Link to="/clientes">
               <Button variant="outline-secondary">
@@ -123,7 +134,10 @@ const DetalleCliente = () => {
               </Button>
             </Link>
             {esGerencia && (
-              <Button variant="outline-danger" onClick={manejarEliminar} >
+              <Button
+                variant="outline-danger"
+                onClick={manejarEliminar}
+              >
                 Eliminar Cliente
               </Button>
             )}
