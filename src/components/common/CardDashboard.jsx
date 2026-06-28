@@ -5,14 +5,21 @@ import { Link } from 'react-router-dom';
 const CardDashboard = (props) => {
     const { title, text, link, variant, buttonText } = props.element;
     return (
-        <Card className="shadow-sm">
-            <Card.Body>
-                <Card.Title>{title}</Card.Title>
-                <Card.Text>
+        <Card className="shadow border-0">
+            <Card.Header className="bg-primary text-white text-center">
+                <h5 className="mb-0">{title}</h5>
+            </Card.Header>
+
+            <Card.Body className="d-flex flex-column text-center">
+                <Card.Text className="text-muted mb-4">
                     {text}
                 </Card.Text>
-                <Link to={link}>
-                    <Button variant={props.element.variant}>
+
+                <Link to={link} className="mt-auto">
+                    <Button
+                        variant={props.element.variant}
+                        className="w-100"
+                    >
                         {buttonText}
                     </Button>
                 </Link>

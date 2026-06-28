@@ -5,7 +5,7 @@ import { Container, Card, Row, Col, Spinner, Alert, Button } from "react-bootstr
 import { useAdmin } from "../context/AdminContext";
 
 const DetalleCliente = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
   const { admin } = useAdmin();
 
@@ -27,7 +27,6 @@ const DetalleCliente = () => {
             case 404:
               setError("Recurso no encontrado (404)");
               break;
-
             case 500:
               setError("Error interno del servidor (500)");
               break;
@@ -65,72 +64,101 @@ const DetalleCliente = () => {
     }
   };
 
-   return (
-    <Container className="mt-4">
-      <h2>Ficha Completa del Cliente</h2>
-
+  return (
+    <Container className="py-4">
+      <h2 className="fw-bold text-primary mb-4">
+        Ficha Completa del Cliente
+      </h2>
       {cargando && (
-        <div className="text-center my-4">
-          <Spinner animation="border" />
+        <div className="text-center py-5">
+          <Spinner animation="border" variant="primary" />
         </div>
       )}
-
       {error && <Alert variant="danger">{error}</Alert>}
-
-      {mensaje && <Alert variant="info">{mensaje}</Alert>}
-
+      {mensaje && <Alert variant="success">{mensaje}</Alert>}
       {!cargando && !error && cliente && (
         <>
-          <Card className="mb-4 shadow-sm">
+          {/* Cabecera */}
+          <Card className="shadow border-0 rounded-4 mb-4">
             <Card.Body>
-              <Card.Title>
+              <h3 className="mb-1">
                 {cliente.name.firstname} {cliente.name.lastname}
-              </Card.Title>
-              <Card.Subtitle className="mb-0 text-muted">
-                ID: {cliente.id}
-              </Card.Subtitle>
+              </h3>
+              <p className="text-muted mb-0">
+                Cliente N.º {cliente.id}
+              </p>
             </Card.Body>
           </Card>
-
-          <Row>
+          <Row className="g-4">
             <Col md={6}>
-              <Card className="mb-4 shadow-sm h-100">
+              <Card className="shadow-sm border-0 rounded-4 h-100">
+                <Card.Header className="bg-primary text-white fw-semibold">
+                  Datos de Contacto
+                </Card.Header>
                 <Card.Body>
-                  <Card.Title as="h5">Datos de Contacto y Acceso</Card.Title>
-                  <p><strong>Email:</strong> {cliente.email}</p>
-                  <p><strong>Teléfono:</strong> {cliente.phone}</p>
-                  <p><strong>Usuario:</strong> {cliente.username}</p>
-                  <p><strong>Contraseña:</strong> {cliente.password}</p>
+                  <div className="mb-3">
+                    <small className="text-muted text-uppercase">Email</small>
+                    <div>{cliente.email}</div>
+                  </div>
+                  <hr />
+                  <div className="mb-3">
+                    <small className="text-muted text-uppercase">Teléfono</small>
+                    <div>{cliente.phone}</div>
+                  </div>
+                  <hr />
+                  <div className="mb-3">
+                    <small className="text-muted text-uppercase">Usuario</small>
+                    <div>{cliente.username}</div>
+                  </div>
+                  <hr />
+                  <div>
+                    <small className="text-muted text-uppercase">Contraseña</small>
+                    <div>{cliente.password}</div>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>
-
             <Col md={6}>
-              <Card className="mb-4 shadow-sm h-100">
+              <Card className="shadow-sm border-0 rounded-4 h-100">
+                <Card.Header className="bg-secondary text-white fw-semibold">Dirección</Card.Header>
                 <Card.Body>
-                  <Card.Title as="h5">Dirección</Card.Title>
-                  <p><strong>Calle:</strong> {cliente.address.street}</p>
-                  <p><strong>Número:</strong> {cliente.address.number}</p>
-                  <p><strong>Código Postal:</strong> {cliente.address.zipcode}</p>
-                  <p><strong>Ciudad:</strong> {cliente.address.city}</p>
+                  <div className="mb-3">
+                    <small className="text-muted text-uppercase">Calle</small>
+                    <div>{cliente.address.street}</div>
+                  </div>
+                  <hr />
+                  <div className="mb-3">
+                    <small className="text-muted text-uppercase">Número</small>
+                    <div>{cliente.address.number}</div>
+                  </div>
+                  <hr />
+                  <div className="mb-3">
+                    <small className="text-muted text-uppercase">Código Postal</small>
+                    <div>{cliente.address.zipcode}</div>
+                  </div>
+                  <hr />
+                  <div>
+                    <small className="text-muted text-uppercase">Ciudad</small>
+                    <div>{cliente.address.city}</div>
+                  </div>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
-
-          {esGerencia && (
-            <Button variant="danger" onClick={manejarEliminar}>
-              Eliminar Cliente de la Base de Datos
-            </Button>
-          )}
+          <div className="d-flex gap-2 mt-4">
+            <Link to="/clientes">
+              <Button variant="outline-secondary">
+                Volver al listado
+              </Button>
+            </Link>
+            {esGerencia && (
+              <Button variant="outline-danger" onClick={manejarEliminar} >
+                Eliminar Cliente
+              </Button>
+            )}
+          </div>
         </>
       )}
-
-      <div className="mt-3">
-        <Link to="/clientes">
-          <Button variant="secondary">Volver al Listado</Button>
-        </Link>
-      </div>
     </Container>
   );
 };
