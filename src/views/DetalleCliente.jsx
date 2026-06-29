@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Container, Card, Row, Col, Spinner, Alert, Button } from "react-bootstrap";
@@ -10,7 +9,7 @@ const DetalleCliente = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { admin } = useAdmin();
-  const { eliminarCliente } = useClientes();
+  const { clientes, eliminarCliente } = useClientes();
 
   const [cliente, setCliente] = useState(null);
   const [cargando, setCargando] = useState(true);
@@ -18,43 +17,18 @@ const DetalleCliente = () => {
   const [mensaje, setMensaje] = useState(null);
 
   useEffect(() => {
-    const obtenerCliente = async () => {
-      try {
-        setCargando(true);
-        setError(null);
+  const clienteEncontrado = clientes.find(
+    c => Number(c.id) === Number(id)
+  );
 
-        const respuesta = await axios.get(
-          `https://fakestoreapi.com/users/${id}`
-        );
+  if (clienteEncontrado) {
+    setCliente(clienteEncontrado);
+  } else {
+    setError("Cliente no encontrado");
+  }
 
-        setCliente(respuesta.data);
-
-      } catch (err) {
-        if (err.response) {
-          switch (err.response.status) {
-            case 404:
-              setError("Recurso no encontrado (404)");
-              break;
-            case 500:
-              setError("Error interno del servidor (500)");
-              break;
-            default:
-              setError(
-                `Error ${err.response.status}: ${err.response.statusText}`
-              );
-          }
-        } else if (err.request) {
-          setError("No se pudo conectar con el servidor");
-        } else {
-          setError(err.message);
-        }
-      } finally {
-        setCargando(false);
-      }
-    };
-
-    obtenerCliente();
-  }, [id]);
+  setCargando(false);
+}, [id, clientes]);
 
   const esGerencia = admin?.sector === "Gerencia";
 

@@ -39,39 +39,39 @@ export const ClientesProvider = ({ children }) => {
     };
 
     const agregarCliente = async (cliente) => {
-    try {
-        const respuesta = await clientesServices.agregarCliente(cliente);
+  try {
+    await clientesServices.agregarCliente(cliente);
 
-        const clienteNormalizado = {
-            id: Date.now(),
-            email: cliente.email,
-            username: cliente.username,
-            password: cliente.password,
-            phone: cliente.phone,
-            name: {
-                firstname: cliente.name.firstname,
-                lastname: cliente.name.lastname,
-            },
-            address: {
-                city: cliente.address.city,
-                street: cliente.address.street,
-                number: cliente.address.number,
-                zipcode: cliente.address.zipcode,
-                geolocation: {
-                    lat: cliente.address.geolocation.lat,
-                    long: cliente.address.geolocation.long,
-                }
-            }
-        };
+    const clienteNormalizado = {
+      id: Math.max(...clientes.map(c => Number(c.id))) + 1,
+      email: cliente.email,
+      username: cliente.username,
+      password: cliente.password,
+      phone: cliente.phone,
+      name: {
+        firstname: cliente.name.firstname,
+        lastname: cliente.name.lastname,
+      },
+      address: {
+        city: cliente.address.city,
+        street: cliente.address.street,
+        number: cliente.address.number,
+        zipcode: cliente.address.zipcode,
+        geolocation: {
+          lat: cliente.address.geolocation.lat,
+          long: cliente.address.geolocation.long,
+        }
+      }
+    };
 
-        setClientes(prev => [...prev, clienteNormalizado]);
+    setClientes(prev => [...prev, clienteNormalizado]);
 
-        return clienteNormalizado;
+    return clienteNormalizado;
 
-    } catch (err) {
-        setError(err.message);
-        throw err;
-    }
+  } catch (err) {
+    setError(err.message);
+    throw err;
+  }
 };
 
     return (
