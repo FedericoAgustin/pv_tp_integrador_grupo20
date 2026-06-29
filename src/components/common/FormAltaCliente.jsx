@@ -9,6 +9,7 @@ const FormAltaCliente = () => {
     const navigate = useNavigate();
     const [errores, setErrores] = useState({});
     const [mensaje, setMensaje] = useState("");
+    const [tipoMensaje, setTipoMensaje] = useState("success");
     // este es el objeto que se va a mandar cuando hagamos el post, tiene que tener la misma estructura que los objetos que estan en la api
     const clienteDeInicio = {
         email: "",
@@ -33,41 +34,61 @@ const FormAltaCliente = () => {
     const [cliente, setCliente] = useState(clienteDeInicio);
 
     const handleChange = (e) => {
-    const { name, value } = e.target;
+        const { name, value } = e.target;
+        setCliente((prev) => {
+            if (name === "firstname" || name === "lastname") {
+                return {
+                    ...prev,
+                    name: {
+                        ...prev.name,
+                        [name]: value,
+                    },
+                };
+            }
+            if (["city", "street", "number", "zipcode"].includes(name)) {
+                return {
+                    ...prev,
+                    address: {
+                        ...prev.address,
+                        [name]: value,
+                    },
+                };
+            }
+            if (name === "lat" || name === "lng") {
+                return {
+                    ...prev,
+                    address: {
+                        ...prev.address,
+                        geolocation: {
+                            ...prev.address.geolocation,
+                            [name === "lng" ? "long" : "lat"]: value,
+                        },
+                    },
+                };
+            }
+            return {
+                ...prev,
+                [name]: value,
+            };
+        });
+    };
 
-    setCliente((prev) => {
-        const nuevo = { ...prev };
-
-        if (name === "firstname") nuevo.name.firstname = value;
-        else if (name === "lastname") nuevo.name.lastname = value;
-        else if (name === "city") nuevo.address.city = value;
-        else if (name === "street") nuevo.address.street = value;
-        else if (name === "number") nuevo.address.number = value;
-        else if (name === "zipcode") nuevo.address.zipcode = value;
-        else if (name === "lat") nuevo.address.geolocation.lat = value;
-        else if (name === "lng") nuevo.address.geolocation.long = value;
-        else nuevo[name] = value;
-
-        return nuevo;
-    });
-};
-
-   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-        const respuesta = await agregarCliente(cliente);
-
-        setMensaje(`Cliente creado correctamente. ID: ${respuesta.id}`);
-
-        setCliente(clienteDeInicio);
-        setErrores({});
-        navigate("/clientes");
-
-    } catch (error) {
-        setMensaje(error.message);
-    }
-};
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const respuesta = await agregarCliente(cliente);
+            setTipoMensaje("success");
+            setMensaje(`Cliente creado correctamente. ID asignado: ${respuesta.id}. Redirigiendo...`);
+            setCliente(clienteDeInicio);
+            setErrores({});
+            setTimeout(() => {
+                navigate("/clientes");
+            }, 2000);
+        } catch (error) {
+            setTipoMensaje("danger");
+            setMensaje(error.message || "Ocurrió un error al crear el cliente.");
+        }
+    };
     return (
         <Container className="py-5">
             <Card className="shadow-lg border-0 rounded-4">
@@ -79,6 +100,9 @@ const FormAltaCliente = () => {
                         </Link>
                     </div>
                 </Card.Header>
+                {mensaje && (
+                    <Alert variant="info" className="mt-3">{mensaje}</Alert>
+                )}
                 <Card.Body className="p-4">
                     <Form onSubmit={handleSubmit}>
                         <h5 className="text-primary mb-3">Datos personales</h5>
@@ -98,7 +122,7 @@ const FormAltaCliente = () => {
                         </Row>
                         <Form.Group className="mb-4">
                             <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" name="email" value={cliente.email} onChange={handleChange}placeholder="ejemplo@email.com" />
+                            <Form.Control type="email" name="email" value={cliente.email} onChange={handleChange} placeholder="ejemplo@email.com" />
                         </Form.Group>
                         <hr />
                         <h5 className="text-primary mb-3">Cuenta</h5>
@@ -122,7 +146,7 @@ const FormAltaCliente = () => {
                             <Col md={6}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Teléfono</Form.Label>
-                                    <Form.Control type="text" name="phone" value={cliente.phone} onChange={handleChange}placeholder="11 1234-5678" />
+                                    <Form.Control type="text" name="phone" value={cliente.phone} onChange={handleChange} placeholder="11 1234-5678" />
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
@@ -138,7 +162,7 @@ const FormAltaCliente = () => {
                             <Col md={8}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Calle</Form.Label>
-                                    <Form.Control type="text" name="street" value={cliente.address.street} onChange={handleChange}placeholder="Nombre de la calle" />
+                                    <Form.Control type="text" name="street" value={cliente.address.street} onChange={handleChange} placeholder="Nombre de la calle" />
                                 </Form.Group>
                             </Col>
                             <Col md={4}>
@@ -152,13 +176,13 @@ const FormAltaCliente = () => {
                             <Col md={4}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Código Postal</Form.Label>
-                                    <Form.Control type="text" name="zipcode" value={cliente.address.zipcode} onChange={handleChange}/>
+                                    <Form.Control type="text" name="zipcode" value={cliente.address.zipcode} onChange={handleChange} />
                                 </Form.Group>
                             </Col>
                             <Col md={4}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Latitud</Form.Label>
-                                    <Form.Control type="text" name="lat" value={cliente.address.geolocation.lat} onChange={handleChange}/>
+                                    <Form.Control type="text" name="lat" value={cliente.address.geolocation.lat} onChange={handleChange} />
                                 </Form.Group>
                             </Col>
                             <Col md={4}>
@@ -168,9 +192,6 @@ const FormAltaCliente = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        {mensaje && (
-                            <Alert variant="info" className="mt-3">{mensaje}</Alert>
-                        )}
                         <div className="text-center mt-4">
                             <Button type="submit" variant="success" className="px-5 rounded-3"><strong>Guardar Cliente</strong></Button>
                         </div>

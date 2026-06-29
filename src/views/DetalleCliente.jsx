@@ -17,18 +17,16 @@ const DetalleCliente = () => {
   const [mensaje, setMensaje] = useState(null);
 
   useEffect(() => {
-  const clienteEncontrado = clientes.find(
-    c => Number(c.id) === Number(id)
-  );
+    const clienteEncontrado = clientes.find(
+      c => Number(c.id) === Number(id)
+    );
 
-  if (clienteEncontrado) {
-    setCliente(clienteEncontrado);
-  } else {
-    setError("Cliente no encontrado");
-  }
+    if (clienteEncontrado) {
+      setCliente(clienteEncontrado);
+    }
 
-  setCargando(false);
-}, [id, clientes]);
+    setCargando(false);
+  }, [id, clientes]);
 
   const esGerencia = admin?.sector === "Gerencia";
 
