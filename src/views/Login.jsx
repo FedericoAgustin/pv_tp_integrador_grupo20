@@ -14,7 +14,7 @@ const Login = () => {
 
   const manejarSubmit = (e) => {
     e.preventDefault();
-    const erroresValidacion = validarInicio({ nombre, password });
+    const erroresValidacion = validarInicio({ nombre });
     setErrores(erroresValidacion);
     if (Object.keys(erroresValidacion).length > 0) return;
 

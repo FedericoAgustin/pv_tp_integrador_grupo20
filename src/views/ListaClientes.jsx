@@ -18,7 +18,7 @@ const ListaClientes = () => {
 
   return (
     <Container className="mt-4">
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-0 mb-5">
         {/* HEADER */}
         <Card.Header className="bg-primary text-white d-flex justify-content-between align-items-center">
           <h4 className="mb-0">

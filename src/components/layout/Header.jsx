@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { useAdmin } from "../../context/AdminContext";
 
 const Header = () => {
   const { admin, cerrarSesion } = useAdmin();
-  const navigate = useNavigate();
 
   const manejarCerrarSesion = () => {
     cerrarSesion();
