@@ -42,8 +42,10 @@ export const ClientesProvider = ({ children }) => {
   try {
     await clientesServices.agregarCliente(cliente);
 
+    const maxId = clientes.length > 0 ? Math.max(...clientes.map(c => Number(c.id))) : 0;
+
     const clienteNormalizado = {
-      id: Math.max(...clientes.map(c => Number(c.id))) + 1,
+      id: maxId + 1,
       email: cliente.email,
       username: cliente.username,
       password: cliente.password,

@@ -1,4 +1,4 @@
-export const validarInicio = ({ nombre, password }) => {
+export const validarInicio = ({ nombre }) => {
     const errores = {};
 
     if (!nombre.trim()) {

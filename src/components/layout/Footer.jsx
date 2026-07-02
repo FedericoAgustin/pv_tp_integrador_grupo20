@@ -2,7 +2,7 @@ import '../../App.css';
 const Footer =() =>{
 
     return(
-        <footer className='text-white text-center py-3 mt-5'>
+        <footer className='bg-light bg-gradient text-black text-center py-3 border-bottom'>
             <p>Gestion de clientes 2026</p>
         </footer>
     );

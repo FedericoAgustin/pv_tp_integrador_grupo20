@@ -17,7 +17,7 @@ const CardDashboard = (props) => {
 
                 <Link to={link} className="mt-auto">
                     <Button
-                        variant={props.element.variant}
+                        variant={variant}
                         className="w-100"
                     >
                         {buttonText}

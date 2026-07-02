@@ -1,13 +1,17 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
+import Footer from "./Footer"
 
 
 const Layout = () => {
   return (
-    <>
+    <div className="min-vh-100 d-flex flex-column">
       <Header />
-      <Outlet />
-    </>
+        <main className="flex-grow-1">
+          <Outlet /> 
+        </main>
+      <Footer/>
+    </div>
   );
 }
 
